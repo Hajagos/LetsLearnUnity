@@ -39,10 +39,15 @@ public class EnemyHealth : MonoBehaviour
 
     public void TakeDamage (int amount, Vector3 hitPoint)
     {
-        if(isDead)
+        if (isDead) {
             return;
+        }
 
-        enemyAudio.Play ();
+
+        if (enemyAudio) {
+            enemyAudio.Play();
+        }
+        
 
         currentHealth -= amount;
             
