@@ -70,15 +70,25 @@ public class PlayerShooting : MonoBehaviour
 
         if(Physics.Raycast (shootRay, out shootHit, range, shootableMask))
         {
+            Debug.Log("hit");
             EnemyHealth enemyHealth = shootHit.collider.GetComponent <EnemyHealth> ();
-            if(enemyHealth != null)
+            if (enemyHealth == null) {
+                enemyHealth = shootHit.collider.GetComponentInParent<EnemyHealth>();
+            }
+
+            if (enemyHealth != null)
             {
-                enemyHealth.TakeDamage (damagePerShot, shootHit.point);
+                Debug.Log("enemyHealth: " + enemyHealth.ToString());
+                enemyHealth.TakeDamage(damagePerShot, shootHit.point);
+            }
+            else {
+                Debug.Log("target object is NULL");
             }
             gunLine.SetPosition (1, shootHit.point);
         }
         else
         {
+            Debug.Log("no hit");
             gunLine.SetPosition (1, shootRay.origin + shootRay.direction * range);
         }
     }
