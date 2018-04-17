@@ -50,3 +50,4 @@
 **/*.unitypackage
 **/*_Data
 **/*.exe
+**/*UnityPlayer.dll
