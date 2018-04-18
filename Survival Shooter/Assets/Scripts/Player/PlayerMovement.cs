@@ -2,10 +2,11 @@
 
 public class PlayerMovement : MonoBehaviour
 {
-    public float speed = 6f;
+    public float forwardSpeed = 6f;
+    public float backwardSpeed = 4f;
 
     Vector3 movement;
-    Animator anim;
+    Animator animator;
     Rigidbody playerRigidbody;
     int floorMask;
     float camRayLength = 100f;
@@ -14,7 +15,7 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
         floorMask = LayerMask.GetMask("Floor");
-        anim = GetComponent<Animator>();
+        animator = GetComponent<Animator>();
         playerRigidbody = GetComponent<Rigidbody>();
     }
 
@@ -34,6 +35,7 @@ public class PlayerMovement : MonoBehaviour
    
     void Move(float horizontal, float vertical)
     {
+        float speed = 6f;
         movement.Set(horizontal, 0f, vertical);
         movement = movement.normalized * speed * Time.deltaTime;
 
@@ -43,25 +45,30 @@ public class PlayerMovement : MonoBehaviour
 
     void Turning()
     {
-        Ray camRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+        playerRigidbody.MoveRotation(playerToMouseAngle()); 
+    }
 
+    Quaternion playerToMouseAngle() {
+        Ray camRay = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit floorHit;
 
-        if (Physics.Raycast(camRay, out floorHit, camRayLength, floorMask))
-        {
+        if (Physics.Raycast(camRay, out floorHit, camRayLength, floorMask)) {
             Vector3 playerToMouse = floorHit.point - transform.position;
             playerToMouse.y = 0f;
-
-            Quaternion newRotation = Quaternion.LookRotation(playerToMouse);
-            playerRigidbody.MoveRotation(newRotation);
+            return Quaternion.LookRotation(playerToMouse);
+        }
+        else {
+            return new Quaternion();
         }
     }
 
     void Animating(float horizontal, float vertical)
     {
-        bool walking = horizontal != 0f || vertical != 0f;
+        bool running = horizontal != 0f || vertical != 0f;
 
-        //Set value of 'walking' variable to the boolean condition 'IsWalking' (created in unity, animation) 
-        anim.SetBool("IsWalking", walking);
+        //animator.speed = -1;
+
+        //Set value of 'running' variable to the boolean condition 'IsRunning' (created in unity, animation) 
+        animator.SetBool("IsRunning", running);
     }
 }
