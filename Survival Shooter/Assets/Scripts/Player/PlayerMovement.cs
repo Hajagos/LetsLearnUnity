@@ -35,10 +35,12 @@ public class PlayerMovement : MonoBehaviour
    
     void Move(float horizontal, float vertical)
     {
-        float speed = 6f;
         movement.Set(horizontal, 0f, vertical);
-        movement = movement.normalized * speed * Time.deltaTime;
         bool isRunningForward = runningForward(movement, playerToMouseAngle());
+        float speed = isRunningForward ? 6f : 5.2f;
+
+        movement = movement.normalized * speed * Time.deltaTime;
+        
  
         //TODO: handle other directions too.
         animator.SetBool("Forward", isRunningForward);
