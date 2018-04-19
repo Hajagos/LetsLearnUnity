@@ -38,35 +38,44 @@ public class PlayerMovement : MonoBehaviour
         float speed = 6f;
         movement.Set(horizontal, 0f, vertical);
         movement = movement.normalized * speed * Time.deltaTime;
+        bool isRunningForward = runningForward(movement, playerToMouseAngle());
+ 
+        //TODO: handle other directions too.
+        animator.SetBool("Forward", isRunningForward);
+        animator.SetBool("Backward", !isRunningForward);
 
         //Current position plus the input
         playerRigidbody.MovePosition(transform.position + movement);
     }
 
-    void Turning()
-    {
-        playerRigidbody.MoveRotation(playerToMouseAngle()); 
+    //TODO:
+    //Decides only between forward and backward (not having the option to move differently to other directions)
+    bool runningForward(Vector3 movement, Vector3 direction) {
+        float angleDifference = Vector3.Angle(movement, direction);
+        return angleDifference < 90; ;
     }
 
-    Quaternion playerToMouseAngle() {
+    void Turning()
+    {
+        Vector3 playerToMouse = playerToMouseAngle();
+        playerToMouse.y = 0f;
+        playerRigidbody.MoveRotation(Quaternion.LookRotation(playerToMouse)); 
+    }
+
+    Vector3 playerToMouseAngle() {
         Ray camRay = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit floorHit;
-
         if (Physics.Raycast(camRay, out floorHit, camRayLength, floorMask)) {
-            Vector3 playerToMouse = floorHit.point - transform.position;
-            playerToMouse.y = 0f;
-            return Quaternion.LookRotation(playerToMouse);
+            return floorHit.point - transform.position;
         }
         else {
-            return new Quaternion();
+            return new Vector3();
         }
     }
 
     void Animating(float horizontal, float vertical)
     {
         bool running = horizontal != 0f || vertical != 0f;
-
-        //animator.speed = -1;
 
         //Set value of 'running' variable to the boolean condition 'IsRunning' (created in unity, animation) 
         animator.SetBool("IsRunning", running);
