@@ -121,8 +121,9 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 6510655}
+  - component: {fileID: 6510656}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: BarrelEnd
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -141,6 +142,20 @@ Transform:
   m_Father: {fileID: 1997378832}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -57.026, y: 442.603, z: -166.798}
+--- !u!114 &6510656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 6510654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27c63be2a8918c741863160b9d9da122, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damagePerShot: 20
+  timeBetweenBullets: 0.15
+  range: 100
 --- !u!1 &79943129
 GameObject:
   m_ObjectHideFlags: 0
@@ -4931,7 +4946,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   forwardSpeed: 6
   backwardSpeed: 4
-  upperBody: {fileID: 179778498}
 --- !u!114 &888794664
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5834,7 +5848,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   forwardSpeed: 6
   backwardSpeed: 4
-  upperBody: {fileID: 0}
 --- !u!82 &1756396009
 AudioSource:
   m_ObjectHideFlags: 0
