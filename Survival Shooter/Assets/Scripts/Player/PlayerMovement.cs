@@ -54,7 +54,7 @@ public class PlayerMovement : MonoBehaviour
     //Decides only between forward and backward (not having the option to move differently to other directions)
     bool runningForward(Vector3 movement, Vector3 direction) {
         float angleDifference = Vector3.Angle(movement, direction);
-        return angleDifference < 90; ;
+        return angleDifference < 90;
     }
 
     void Turning()
