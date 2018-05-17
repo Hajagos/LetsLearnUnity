@@ -12,6 +12,7 @@ public class EnemyMovement : MonoBehaviour
     void Awake ()
     {
         player = GameObject.FindGameObjectWithTag ("Player").transform;
+        Debug.Log("enemy movement awake : " + player);
         playerHealth = player.GetComponent <PlayerHealth> ();
         enemyHealth = GetComponent <EnemyHealth> ();
         nav = GetComponent <UnityEngine.AI.NavMeshAgent> ();
