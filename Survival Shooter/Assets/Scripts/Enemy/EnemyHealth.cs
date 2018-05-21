@@ -50,9 +50,11 @@ public class EnemyHealth : MonoBehaviour
         
 
         currentHealth -= amount;
-            
-        hitParticles.transform.position = hitPoint;
-        hitParticles.Play();
+
+        if (hitParticles != null)  {
+            hitParticles.transform.position = hitPoint;
+            hitParticles.Play();
+        }   
 
         if(currentHealth <= 0)
         {
@@ -69,8 +71,10 @@ public class EnemyHealth : MonoBehaviour
 
         anim.SetTrigger ("Dead");
 
-        enemyAudio.clip = deathClip;
-        enemyAudio.Play ();
+        if (enemyAudio != null) {
+            enemyAudio.clip = deathClip;
+            enemyAudio.Play();
+        }
     }
 
 
