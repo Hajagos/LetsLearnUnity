@@ -289,7 +289,7 @@ AudioSource:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 6510654}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: fa7f046ce321d4021b5e753bf1152916, type: 3}
@@ -5744,6 +5744,10 @@ Prefab:
     - target: {fileID: 4754015716900846, guid: 838684fb46b0cc64c8c7e340f450e5e9, type: 2}
       propertyPath: m_RootOrder
       value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 1484540391370864, guid: 838684fb46b0cc64c8c7e340f450e5e9, type: 2}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 838684fb46b0cc64c8c7e340f450e5e9, type: 2}
