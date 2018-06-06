@@ -6,10 +6,9 @@ public class PlayerShooting : MonoBehaviour
     public float timeBetweenBullets = 0.15f;
     public float range = 100f;
 
-
     float timer;
     Ray shootRay = new Ray();
-    RaycastHit shootHit;
+
     int shootableMask;
     //ParticleSystem gunParticles;
     LineRenderer gunLine;
@@ -53,13 +52,11 @@ public class PlayerShooting : MonoBehaviour
         animator.ResetTrigger("Shoot");
     }
 
-
     void Shoot ()
     {
         timer = 0f;
 
         gunAudio.Play ();
-
 
         animator.SetTrigger("Shoot");
 
@@ -67,35 +64,49 @@ public class PlayerShooting : MonoBehaviour
 
         // gunParticles.Stop ();
         // gunParticles.Play ();
-
+        
         gunLine.enabled = true;
-        gunLine.SetPosition (0, transform.position);
+        //gunLine.SetPosition(0, transform.position);
 
         shootRay.origin = transform.position;
-        shootRay.direction = transform.forward;
 
-        if(Physics.Raycast (shootRay, out shootHit, range, shootableMask))
-        {
-            Debug.Log("hit");
-            EnemyHealth enemyHealth = shootHit.collider.GetComponent <EnemyHealth> ();
-            if (enemyHealth == null) {
-                enemyHealth = shootHit.collider.GetComponentInParent<EnemyHealth>();
-            }
+        //Source: https://answers.unity.com/questions/346804/is-there-a-way-to-get-mouse-position-in-3d-space-a.html?sort=votes
+        Plane plane = new Plane(Vector3.up,0);
+        float dist;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (plane.Raycast(ray, out dist)) {
+            //gunLine.SetPosition (1, ray.GetPoint(dist));
+            
+            Vector3 targetPosition = ray.GetPoint(dist);
+ 
+            shootRay.direction = targetPosition;
 
-            if (enemyHealth != null)
-            {
-                Debug.Log("enemyHealth: " + enemyHealth.ToString());
-                enemyHealth.TakeDamage(damagePerShot, shootHit.point);
+            //If cube spawning, aiming is accurate ???
+
+            //  GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            //  cube.transform.position = targetPosition;
+            // cube.transform.localScale = new Vector3 (1, 1, 1);
+            // Instantiate (cube);
+            
+            RaycastHit hit;      
+            gunLine.SetPosition(0, transform.position);
+            
+            if (Physics.Linecast(transform.position, targetPosition, out hit)) {
+                EnemyHealth enemyHealth = hit.collider.GetComponent <EnemyHealth> ();
+                if (enemyHealth == null) {
+                    enemyHealth = hit.collider.GetComponentInParent<EnemyHealth>();
+                }
+                if (enemyHealth != null) {
+                    Debug.Log("enemyHealth: " + enemyHealth.ToString());
+                    enemyHealth.TakeDamage(damagePerShot, hit.point);
+                }
+                else {
+                    Debug.Log("target object is NULL");
+                }
+                gunLine.SetPosition (1, hit.point);                
+            } else {
+                Debug.Log("no hit");
             }
-            else {
-                Debug.Log("target object is NULL");
-            }
-            gunLine.SetPosition (1, shootHit.point);
-        }
-        else
-        {
-            Debug.Log("no hit");
-            gunLine.SetPosition (1, shootRay.origin + shootRay.direction * range);
-        }
+         }
     }
 }

@@ -5,6 +5,8 @@ public class PlayerMovement : MonoBehaviour
     public float forwardSpeed = 6f;
     public float backwardSpeed = 4f;
 
+    public Vector3 turningModifier;
+
     Vector3 movement;
     Animator animator;
     Rigidbody playerRigidbody;
@@ -61,7 +63,12 @@ public class PlayerMovement : MonoBehaviour
     {
         Vector3 playerToMouse = playerToMouseAngle();
         playerToMouse.y = 0f;
+        playerToMouse.Scale(turningModifier);
+        // Debug.Log("Turning playerRot before: " + playerRigidbody.rotation);
+        
         playerRigidbody.MoveRotation(Quaternion.LookRotation(playerToMouse)); 
+        
+        // Debug.Log("Turning playerRot after: " + playerRigidbody.rotation);
     }
 
     Vector3 playerToMouseAngle() {
