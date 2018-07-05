@@ -127,7 +127,7 @@ GameObject:
   - component: {fileID: 6510658}
   m_Layer: 0
   m_Name: BarrelEnd
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -159,6 +159,7 @@ MonoBehaviour:
   damagePerShot: 20
   timeBetweenBullets: 0.15
   range: 100
+  parent: {fileID: 0}
 --- !u!108 &6510657
 Light:
   m_ObjectHideFlags: 0
@@ -5551,6 +5552,7 @@ MonoBehaviour:
   damagePerShot: 20
   timeBetweenBullets: 0.15
   range: 100
+  parent: {fileID: 0}
 --- !u!82 &346528582
 AudioSource:
   m_ObjectHideFlags: 0

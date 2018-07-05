@@ -18,6 +18,7 @@ public class PlayerShooting : MonoBehaviour
 
     Animator animator;
 
+
     void Awake ()
     {
         shootableMask = LayerMask.GetMask ("Shootable");
@@ -32,6 +33,7 @@ public class PlayerShooting : MonoBehaviour
     void Update ()
     {
         timer += Time.deltaTime;
+        //transform.localPosition = new Vector3(0, 0, 0);
 
 		if(Input.GetButton ("Fire1") && timer >= timeBetweenBullets && Time.timeScale != 0)
         {
@@ -42,6 +44,8 @@ public class PlayerShooting : MonoBehaviour
         {
             DisableEffects ();
         }
+
+        //Debug.Log("Playershooting-Update, Barrelend pos: " + this.transform.position);
     }
 
 
@@ -75,7 +79,7 @@ public class PlayerShooting : MonoBehaviour
         float dist;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (plane.Raycast(ray, out dist)) {
-            //gunLine.SetPosition (1, ray.GetPoint(dist));
+            gunLine.SetPosition (1, ray.GetPoint(dist));
             
             Vector3 targetPosition = ray.GetPoint(dist);
  
@@ -90,6 +94,13 @@ public class PlayerShooting : MonoBehaviour
             
             RaycastHit hit;      
             gunLine.SetPosition(0, transform.position);
+            // Debug.Log("t: " + transform);
+            //  Debug.Log("BEFORE linecast tp: " + transform.position);
+            //  Debug.Log("BEFORE target: " + targetPosition);
+
+            // Debug.Log("c: " + cube);
+            // Debug.Log("ct: " + cube.transform);
+            // Debug.Log("ctp: " + cube.transform.position);
             
             if (Physics.Linecast(transform.position, targetPosition, out hit)) {
                 EnemyHealth enemyHealth = hit.collider.GetComponent <EnemyHealth> ();
@@ -97,16 +108,19 @@ public class PlayerShooting : MonoBehaviour
                     enemyHealth = hit.collider.GetComponentInParent<EnemyHealth>();
                 }
                 if (enemyHealth != null) {
-                    Debug.Log("enemyHealth: " + enemyHealth.ToString());
+                    //Debug.Log("enemyHealth: " + enemyHealth.ToString());
                     enemyHealth.TakeDamage(damagePerShot, hit.point);
                 }
                 else {
-                    Debug.Log("target object is NULL");
+                    //Debug.Log("target object is NULL");
                 }
-                gunLine.SetPosition (1, hit.point);                
+                //gunLine.SetPosition (1, hit.point);                
             } else {
-                Debug.Log("no hit");
+                //Debug.Log("no hit");
             }
+
+            // Debug.Log("AFTER linecast tp: " + transform.position);
+            // Debug.Log("AFTER target: " + targetPosition);
          }
     }
 }
