@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemyHealth : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class EnemyHealth : MonoBehaviour
     public int scoreValue = 10;
     public AudioClip deathClip;
 
+    public Image healthBar;
 
     Animator anim;
     AudioSource enemyAudio;
@@ -48,8 +50,9 @@ public class EnemyHealth : MonoBehaviour
             enemyAudio.Play();
         }
         
-
         currentHealth -= amount;
+
+        healthBar.fillAmount = (float) currentHealth / startingHealth;
 
         if (hitParticles != null)  {
             hitParticles.transform.position = hitPoint;
