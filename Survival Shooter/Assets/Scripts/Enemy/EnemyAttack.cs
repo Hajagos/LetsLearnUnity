@@ -38,6 +38,7 @@ public class EnemyAttack : MonoBehaviour
         if(other.gameObject == player)
         {
             playerInRange = false;
+            anim.SetBool("IsAttacking", false);
         }
     }
 
@@ -48,7 +49,7 @@ public class EnemyAttack : MonoBehaviour
 
         if(timer >= timeBetweenAttacks && playerInRange && enemyHealth.currentHealth > 0)
         {
-            Attack ();
+            Attack();
         }
 
         if(playerHealth.currentHealth <= 0)
@@ -65,6 +66,7 @@ public class EnemyAttack : MonoBehaviour
         if(playerHealth.currentHealth > 0)
         {
             playerHealth.TakeDamage (attackDamage);
+            anim.SetBool("IsAttacking", true);
         }
     }
 }
