@@ -3,22 +3,15 @@
 **/[Oo]bj/
 **/[Bb]uild/
 **/[Bb]uilds/
-**/Assets/Audio*
-**/Assets/Fonts*
-**/Assets/_Complete-Game*
-**/Assets/Textures*
-**/Assets/Materials*
-**/Assets/Models*
+**/Assets/AssetStoreDownloads*
+**/Assets/TutorialStuff*
+**/ProjectSettings*
 **/Assets/GiParamaters*
 **/Assets/Prefabs*
 **/Assets/PostProcessing*
-**/Assets/TutorialInfo*
-**/Assets/AssetStoreTools*
-**/Assets/Zombie*
-**/Assets/SoldiersPack*
-**/Assets/LowPolySoldiers_demo*
+**/Assets/Fonts/*
+**/Mono/*
 
-**/ProjectSettings*
 
 #Files in survival shooter tutorial (idk exactly what are these)
 **/Tutorials-SurvivalShooter-Upgrade to 5.pdf
@@ -47,6 +40,7 @@
 
 # Unity3D generated meta files
 **/*.pidb.meta
+*.meta
 
 # Unity3D Generated File On Crash Reports
 **/sysinfo.txt
