@@ -65,8 +65,10 @@ public class PlayerMovement : MonoBehaviour
         playerToMouse.y = 0f;
         playerToMouse.Scale(turningModifier);
         // Debug.Log("Turning playerRot before: " + playerRigidbody.rotation);
-        
-        playerRigidbody.MoveRotation(Quaternion.LookRotation(playerToMouse)); 
+       
+       if (playerToMouse != Vector3.zero) {
+            playerRigidbody.MoveRotation(Quaternion.LookRotation(playerToMouse)); 
+       }
         
         // Debug.Log("Turning playerRot after: " + playerRigidbody.rotation);
     }
@@ -78,7 +80,7 @@ public class PlayerMovement : MonoBehaviour
             return floorHit.point - transform.position;
         }
         else {
-            return new Vector3();
+            return Vector3.zero;
         }
     }
 

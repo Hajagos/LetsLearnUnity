@@ -6,11 +6,15 @@ public class PlayerShooting : MonoBehaviour
     public float timeBetweenBullets = 0.15f;
     public float range = 100f;
 
+    public float targetVerticalOffset = 0f;
+
     float timer;
     Ray shootRay = new Ray();
 
     int shootableMask;
-    //ParticleSystem gunParticles;
+    public ParticleSystem muzzleFlash;
+    public ParticleSystem bulletImpactWood;
+    public ParticleSystem bulletImpactConcrete;
     LineRenderer gunLine;
     AudioSource gunAudio;
     Light gunLight;
@@ -22,7 +26,7 @@ public class PlayerShooting : MonoBehaviour
     void Awake ()
     {
         shootableMask = LayerMask.GetMask ("Shootable");
-        //gunParticles = GetComponent<ParticleSystem> ();
+
         gunLine = GetComponent <LineRenderer> ();
         gunAudio = GetComponent<AudioSource> ();
         gunLight = GetComponent<Light> ();
@@ -54,20 +58,22 @@ public class PlayerShooting : MonoBehaviour
         gunLine.enabled = false;
         gunLight.enabled = false;
         animator.ResetTrigger("Shoot");
+        muzzleFlash.Stop();
     }
 
     void Shoot ()
     {
         timer = 0f;
 
-        gunAudio.Play ();
+        gunAudio.Play();
+        
+        muzzleFlash.gameObject.SetActive(true);
+        muzzleFlash.Simulate(1);
+        muzzleFlash.Play();
 
         animator.SetTrigger("Shoot");
 
         gunLight.enabled = true;
-
-        // gunParticles.Stop ();
-        // gunParticles.Play ();
         
         gunLine.enabled = true;
         //gunLine.SetPosition(0, transform.position);
@@ -77,11 +83,17 @@ public class PlayerShooting : MonoBehaviour
         //Source: https://answers.unity.com/questions/346804/is-there-a-way-to-get-mouse-position-in-3d-space-a.html?sort=votes
         Plane plane = new Plane(Vector3.up,0);
         float dist;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        Vector3 target = Input.mousePosition;
+        target.y += targetVerticalOffset;
+
+        Ray ray = Camera.main.ScreenPointToRay(target);
         if (plane.Raycast(ray, out dist)) {
             gunLine.SetPosition (1, ray.GetPoint(dist));
             
             Vector3 targetPosition = ray.GetPoint(dist);
+
+            targetPosition.y += targetVerticalOffset;
  
             shootRay.direction = targetPosition;
 
@@ -104,18 +116,23 @@ public class PlayerShooting : MonoBehaviour
             
             if (Physics.Linecast(transform.position, targetPosition, out hit)) {
                 EnemyHealth enemyHealth = hit.collider.GetComponent <EnemyHealth> ();
+            
                 if (enemyHealth == null) {
+                    //Enemy was hit by the shot
                     enemyHealth = hit.collider.GetComponentInParent<EnemyHealth>();
                 }
                 if (enemyHealth != null) {
                     //Debug.Log("enemyHealth: " + enemyHealth.ToString());
                     enemyHealth.TakeDamage(damagePerShot, hit.point);
-                }
-                else {
-                    //Debug.Log("target object is NULL");
+                } else {
+                    //Other object was hit by the shot, most likely the floor or walls
+                    ParticleSystem floorHitParticle = Instantiate(bulletImpactWood, targetPosition, Quaternion.identity);
+                    floorHitParticle.gameObject.SetActive(true);
+                    floorHitParticle.Stop();
+                    floorHitParticle.Play();
                 }
                 //gunLine.SetPosition (1, hit.point);                
-            } else {
+            } else {              
                 //Debug.Log("no hit");
             }
 

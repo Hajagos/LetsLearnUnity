@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemyHealth : MonoBehaviour
 {
@@ -6,22 +7,25 @@ public class EnemyHealth : MonoBehaviour
     public int currentHealth;
     public float sinkSpeed = 2.5f;
     public int scoreValue = 10;
-    public AudioClip deathClip;
 
+    public AudioSource deathClip;
+
+    public Image healthBar;
+    public ParticleSystem bloodSplush;
 
     Animator anim;
-    AudioSource enemyAudio;
-    ParticleSystem hitParticles;
+    public AudioSource takeDamageSound1;
+
+    public AudioSource takeDamageSound2;
+
     CapsuleCollider capsuleCollider;
     bool isDead;
     bool isSinking;
 
-
     void Awake ()
     {
         anim = GetComponent <Animator> ();
-        enemyAudio = GetComponent <AudioSource> ();
-        hitParticles = GetComponentInChildren <ParticleSystem> ();
+        bloodSplush = GetComponentInChildren <ParticleSystem> ();
         capsuleCollider = GetComponent <CapsuleCollider> ();
 
         currentHealth = startingHealth;
@@ -43,17 +47,30 @@ public class EnemyHealth : MonoBehaviour
             return;
         }
 
-
-        if (enemyAudio) {
-            enemyAudio.Play();
+        //TODO: refactor to dynamic method and clean this shit up
+        if (Random.Range(1,3) % 2 == 0) {
+            if (takeDamageSound1) {
+                if (!takeDamageSound1.isPlaying) {
+                    takeDamageSound1.Play();
+                }
+            }
+        } else {
+            if (takeDamageSound2) {
+                if (!takeDamageSound2.isPlaying) {
+                    takeDamageSound2.Play();
+                }
+            }
         }
-        
 
+        
+        
         currentHealth -= amount;
 
-        if (hitParticles != null)  {
-            hitParticles.transform.position = hitPoint;
-            hitParticles.Play();
+        healthBar.fillAmount = (float) currentHealth / startingHealth;
+
+        if (bloodSplush != null)  {
+            bloodSplush.transform.position = hitPoint;
+            bloodSplush.Play();
         }   
 
         if(currentHealth <= 0)
@@ -61,7 +78,6 @@ public class EnemyHealth : MonoBehaviour
             Death ();
         }
     }
-
 
     void Death ()
     {
@@ -71,19 +87,16 @@ public class EnemyHealth : MonoBehaviour
 
         anim.SetTrigger ("Dead");
 
-        if (enemyAudio != null) {
-            enemyAudio.clip = deathClip;
-            enemyAudio.Play();
-        }
+        deathClip.Play();
+        ScoreManager.score += scoreValue;
     }
-
 
     public void StartSinking ()
     {
         GetComponent <UnityEngine.AI.NavMeshAgent> ().enabled = false;
         GetComponent <Rigidbody> ().isKinematic = true;
         isSinking = true;
-        ScoreManager.score += scoreValue;
+        
         Destroy (gameObject, 2f);
     }
 }
