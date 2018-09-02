@@ -115,7 +115,7 @@ public class PlayerShooting : MonoBehaviour
             // Debug.Log("ctp: " + cube.transform.position);
             
             if (Physics.Linecast(transform.position, targetPosition, out hit)) {
-                EnemyHealth enemyHealth = hit.collider.GetComponent <EnemyHealth> ();
+                EnemyHealth enemyHealth = hit.collider.GetComponent <EnemyHealth>();
             
                 if (enemyHealth == null) {
                     //Enemy was hit by the shot

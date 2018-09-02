@@ -41,5 +41,4 @@ public class EnemyFinder : MonoBehaviour {
 			return (int) (Vector3.Distance(e1.transform.position, this.origin) - Vector3.Distance(e2.transform.position, this.origin));
         }
     }
-
 }
